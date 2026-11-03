@@ -2,6 +2,7 @@ import json, os
 from pathlib import Path
 from uuid import uuid4
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Header
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from dotenv import load_dotenv
@@ -16,6 +17,14 @@ load_dotenv()
 DOCUMENTS_DIR = Path(os.getenv("DOCUMENTS_DIR", "./documents"))
 Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Personal Shopper AI API", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://shopper-frontend-eta.vercel.app"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def current_user(x_user_id: str | None = Header(default="demo-user")):
     # Demo identity only. Replace with verified JWT/OAuth identity before production.
