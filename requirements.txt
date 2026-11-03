@@ -18,6 +18,6 @@ guardrails-ai-competitor-check>=0.0.2
 guardrails-ai-profanity-free>=0.1.0
 guardrails-ai-guardrails-pii>=1.0.8
 transformers>=4.40,<5
-huggingface-hub>=1.5,<2
+huggingface-hub>=0.34,<1.0
 openai>=2.8,<3
 click<=8.2.0
