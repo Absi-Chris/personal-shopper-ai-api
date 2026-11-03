@@ -1,0 +1,20 @@
+{"question": "When is an order considered submitted?", "reference_answer": "An order is submitted after the customer confirms the checkout summary and receives an order reference number."}
+{"question": "Are products in a shopping cart reserved?", "reference_answer": "No. Items placed in the shopping cart are not reserved."}
+{"question": "How soon should I receive an order confirmation email?", "reference_answer": "A confirmation email is normally issued within 15 minutes after a successful order submission."}
+{"question": "What should I do if I have not received my confirmation email?", "reference_answer": "Check your spam folder or contact support with the checkout timestamp."}
+{"question": "What are the possible order statuses?", "reference_answer": "The listed order statuses are Pending Payment, Confirmed, Packing, Shipped, Delivered, Cancelled, and Refunded."}
+{"question": "Does a Pending Payment order count as accepted?", "reference_answer": "No. Only a confirmed transaction should be treated as an accepted order."}
+{"question": "How long does it take to prepare a confirmed order?", "reference_answer": "Confirmed orders are usually prepared within one to two business days, excluding weekends and published holidays. Custom or special-order items may take longer."}
+{"question": "What payment methods are accepted?", "reference_answer": "The fictional store accepts major credit and debit cards, selected e-wallets, and bank transfers. Cash on delivery is offered only if checkout explicitly displays it."}
+{"question": "Can I pay cash on delivery for any order?", "reference_answer": "No. Cash on delivery is available only when the checkout screen explicitly offers it."}
+{"question": "How long does bank transfer verification take?", "reference_answer": "A bank transfer should be verified within one business day after valid proof of payment is received."}
+{"question": "What happens if I do not pay for my order within 48 hours?", "reference_answer": "Orders awaiting payment may be automatically cancelled after 48 hours."}
+{"question": "When do I receive a receipt?", "reference_answer": "Electronic receipts are delivered after successful payment."}
+{"question": "How long do I have to request an invoice correction?", "reference_answer": "An invoice correction should be requested within seven calendar days after receiving the invoice."}
+{"question": "Can the shopping assistant collect my OTP or full card details?", "reference_answer": "No. Customers must not share passwords, one-time passcodes, or full card details in chat, and the assistant cannot collect payment credentials or directly charge cards."}
+{"question": "Does the store deliver anywhere in the Philippines?", "reference_answer": "Standard delivery is available only to eligible Philippine addresses. Eligibility is confirmed during checkout using the delivery address."}
+{"question": "What is the standard shipping fee in Metro Manila?", "reference_answer": "Metro Manila standard shipping costs PHP 99, unless the order qualifies for free standard shipping."}
+{"question": "How much does provincial standard shipping cost?", "reference_answer": "Provincial standard shipping costs PHP 149, unless the order qualifies for free standard shipping."}
+{"question": "What order amount qualifies for free standard shipping?", "reference_answer": "An eligible merchandise subtotal of PHP 5,000 or more before discounts and excluding shipping fees qualifies for free standard shipping."}
+{"question": "Does a PHP 3,000 provincial order qualify for free shipping?", "reference_answer": "No. Its subtotal is below PHP 5,000, so the listed provincial standard shipping charge is PHP 149, assuming standard delivery is available."}
+{"question": "My merchandise subtotal is PHP 5,100 before discounts and PHP 4,600 after discounts. Do I get free shipping?", "reference_answer": "Yes, for standard shipping. The PHP 5,000 threshold is calculated on the eligible merchandise subtotal before discounts."}

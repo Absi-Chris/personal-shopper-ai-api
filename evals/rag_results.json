@@ -1,0 +1,213 @@
+{
+  "dataset": "evals/rag_cases.jsonl",
+  "model": "gpt-4o-mini",
+  "top_k": 4,
+  "summary": {
+    "faithfulness": 0.8,
+    "answer_relevancy": 0.6632881688878838,
+    "context_precision": 0.8444444443783101,
+    "context_recall": 0.925
+  },
+  "results": [
+    {
+      "question": "When is an order considered submitted?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Are products in a shopping cart reserved?",
+      "response": "No, items placed in a shopping cart are not reserved.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9238180143018138,
+        "context_precision": 0.7499999999625,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How soon should I receive an order confirmation email?",
+      "response": "A confirmation email is normally issued within 15 minutes of successful order submission.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7665871269128496,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What should I do if I have not received my confirmation email?",
+      "response": "If you have not received your confirmation email, you should check your spam folder or contact support with the checkout timestamp.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9698487609711544,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What are the possible order statuses?",
+      "response": "The possible order statuses are Pending Payment, Confirmed, Packing, Shipped, Delivered, Cancelled, and Refunded.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9999996613562551,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Does a Pending Payment order count as accepted?",
+      "response": "No, only a confirmed transaction should be treated as an accepted order.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.621205967371531,
+        "context_precision": 0.99999999995,
+        "context_recall": 0.5
+      }
+    },
+    {
+      "question": "How long does it take to prepare a confirmed order?",
+      "response": "Confirmed orders are usually prepared within 1-2 business days, excluding weekends and published holidays.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9605325070500813,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What payment methods are accepted?",
+      "response": "The fictional store accepts major credit/debit cards, selected e-wallets, and bank transfer at checkout.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.6768800461103489,
+        "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Can I pay cash on delivery for any order?",
+      "response": "No, cash on delivery is only available when the checkout screen explicitly offers it.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.818277740931422,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How long does bank transfer verification take?",
+      "response": "Bank transfer verification should be completed within one business day after receipt of valid proof.",
+      "scores": {
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.8715031382310937,
+        "context_precision": 0.49999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What happens if I do not pay for my order within 48 hours?",
+      "response": "Orders awaiting payment may be automatically cancelled after 48 hours.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7915093319516094,
+        "context_precision": 0.49999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "When do I receive a receipt?",
+      "response": "Receipts are delivered electronically after successful payment.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7323237481769942,
+        "context_precision": 0.3333333333,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How long do I have to request an invoice correction?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.0,
+        "context_recall": 0.0
+      }
+    },
+    {
+      "question": "Can the shopping assistant collect my OTP or full card details?",
+      "response": "No, the shopping assistant cannot collect sensitive payment credentials or directly process card charges.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7754214318297281,
+        "context_precision": 0.999999999975,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Does the store deliver anywhere in the Philippines?",
+      "response": "The context specifies that standard delivery is available to eligible addresses within the Philippines, but it does not state that the store delivers anywhere in the Philippines.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What is the standard shipping fee in Metro Manila?",
+      "response": "The standard shipping fee in Metro Manila is PHP 99.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9999996100078737,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How much does provincial standard shipping cost?",
+      "response": "Provincial standard shipping costs PHP 149.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9700295082091842,
+        "context_precision": 0.8055555555287036,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What order amount qualifies for free standard shipping?",
+      "response": "An order subtotal of PHP 5,000 or above qualifies for free standard shipping before discounts and excluding shipping fees.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7730279717278966,
+        "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Does a PHP 3,000 provincial order qualify for free shipping?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "My merchandise subtotal is PHP 5,100 before discounts and PHP 4,600 after discounts. Do I get free shipping?",
+      "response": "Yes, you qualify for free standard shipping because your merchandise subtotal of PHP 5,100 is above the PHP 5,000 threshold before discounts.",
+      "scores": {
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.6147988126178391,
+        "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    }
+  ]
+}

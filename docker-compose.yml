@@ -1,0 +1,15 @@
+services:
+  shopper-api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./chroma_data:/app/chroma_data
+      - ./documents:/app/documents
+    environment:
+      DATABASE_URL: sqlite:////app/data/shopper.db
+      VECTOR_DIR: /app/chroma_data
+      DOCUMENTS_DIR: /app/documents
