@@ -2,7 +2,7 @@ import os
 import re
 from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from .models import Cart, CartItem, Product
 from .guardrails import enforce_response_guardrails, validate_user_input
 from .llm_cache import configure_llm_cache
@@ -21,55 +21,108 @@ All catalog prices are in Philippine pesos. Always prefix every monetary amount 
 """
 
 def _replacement_context(message: str, history: list | None) -> str | None:
-    direct_request = re.match(r"^\s*(?:yes\b[\s,!.]*)?(?:please\s+)?(?:replace|swap)\b", message, re.I)
+    direct_request = re.match(
+        r"^\s*(?:yes\b[\s,!.]*)?(?:please\s+)?(?:replac(?:e|ing)|swap(?:ping)?)\b",
+        message,
+        re.I,
+    )
     if direct_request:
         return message
-    if not re.match(r"^\s*(?:yes|yeah|yep|please do|do it|confirmed)\b", message, re.I):
+    confirmation = re.match(
+        r"^\s*(?:yes|yeah|yep|confirmed|please\s+do|do\s+it|proceed(?:\s+with)?(?:\s+\d{1,3}(?:\s*(?:qty|quantity|items?))?)?)\b",
+        message,
+        re.I,
+    )
+    if not confirmation:
         return None
     if not history or history[-1].get("role") != "assistant":
         return None
     previous_answer = history[-1].get("content", "")
-    if re.search(r"\b(replace|swap)\b", previous_answer, re.I) and re.search(
+    if re.search(r"\b(?:replac(?:e|ing|ement)|swap(?:ping)?)\b", previous_answer, re.I) and re.search(
         r"\?|confirm", previous_answer, re.I
     ):
-        return f"{previous_answer}\n{message}"
+        previous_request = next(
+            (
+                item.get("content", "")
+                for item in reversed(history[:-1])
+                if item.get("role") == "user"
+                and re.search(r"\b(?:replac(?:e|ing)|swap(?:ping)?)\b", item.get("content", ""), re.I)
+            ),
+            "",
+        )
+        return f"{previous_answer}\n{previous_request}\n{message}"
     return None
+
+
+def _remove_all_context(message: str, history: list | None) -> bool:
+    if re.match(r"^\s*(?:yes|yeah|yep|please do|do it|confirmed)\b", message, re.I):
+        if not history or history[-1].get("role") != "assistant":
+            return False
+        previous_answer = history[-1].get("content", "")
+        return bool(
+            re.search(r"\b(?:remove|removing|clear|empty)\b.{0,50}\b(?:all items|everything|entire cart)\b", previous_answer, re.I)
+            and re.search(r"\b(?:cart|items)\b", previous_answer, re.I)
+            and re.search(r"\?\b|\b(?:proceed|confirm)\b", previous_answer, re.I)
+        )
+    return bool(re.search(
+        r"^\s*(?:please\s+)?(?:remove|clear|empty)\s+(?:all|everything|the entire)\s+(?:items?\s+)?(?:(?:from|in)\s+)?(?:the\s+)?cart\b|"
+        r"^\s*(?:please\s+)?remove\s+(?:all\s+)?items\s+(?:(?:from|in)\s+)?(?:the\s+)?cart\b",
+        message,
+        re.I,
+    ))
+
+
+def _remove_all_cart_items(db, user_id: str) -> str:
+    cart = db.scalar(select(Cart).where(Cart.user_id == user_id, Cart.status == "active"))
+    if not cart:
+        return "Your cart is already empty."
+    result = db.execute(delete(CartItem).where(CartItem.cart_id == cart.id))
+    db.commit()
+    if not result.rowcount:
+        return "Your cart is already empty."
+    return "Removed all items from your cart."
 
 
 def _mentioned_products(text: str, products: list[Product]) -> list[Product]:
     lowered = text.casefold()
-    return [product for product in products if
-            product.name.casefold() in lowered or
-            (product.brand and product.brand.casefold() in lowered)]
+    exact_matches = [product for product in products if product.name.casefold() in lowered]
+    if exact_matches:
+        return exact_matches
+    return [product for product in products if product.brand and product.brand.casefold() in lowered]
 
 
 def _resolve_replacement(db, user_id: str, text: str, tools: list) -> str | None:
-    match = re.search(
-        r"\b(?:replace|swap)\s+(?:all\s+)?(?P<source>.+?)\s+(?:with|for)\s+(?P<target>.+?)(?:[?.!,\n]|$)",
+    matches = re.finditer(
+        r"\b(?:replac(?:e|ing)|swap(?:ping)?)\s+(?:all\s+)?(?P<source>.+?)\s+(?:with|for)\s+(?P<target>.+?)(?:[?.!,\n]|$)",
         text,
         re.I,
     )
-    if not match:
-        return None
     products = db.scalars(select(Product)).all()
-    old_matches = _mentioned_products(match.group("source"), products)
-    new_matches = _mentioned_products(match.group("target"), products)
-    if len(old_matches) != 1 or len(new_matches) != 1 or old_matches[0].id == new_matches[0].id:
-        return None
-
     cart = db.scalar(select(Cart).where(Cart.user_id == user_id, Cart.status == "active"))
     if not cart:
-        return "There is no active cart to update."
+        return None
     cart_items = db.scalars(select(CartItem).where(CartItem.cart_id == cart.id)).all()
-    old_product = old_matches[0]
-    if not any(item.product_id == old_product.id for item in cart_items):
-        return f"{old_product.name} is not in the cart, so nothing was changed."
-    quantity_match = re.search(r"\b(\d{1,3})\b", match.group("target"))
-    arguments = {"old_product_id": old_product.id, "new_product_id": new_matches[0].id}
-    if quantity_match:
-        arguments["quantity"] = int(quantity_match.group(1))
-    replace_tool = next(tool for tool in tools if tool.name == "replace_in_cart")
-    return replace_tool.invoke(arguments)
+    cart_product_ids = {item.product_id for item in cart_items}
+    for match in matches:
+        old_matches = _mentioned_products(match.group("source"), products)
+        new_matches = _mentioned_products(match.group("target"), products)
+        if (
+            len(old_matches) != 1
+            or len(new_matches) != 1
+            or old_matches[0].id == new_matches[0].id
+            or old_matches[0].id not in cart_product_ids
+        ):
+            continue
+
+        quantity_match = re.match(r"\s*(\d{1,3})\b", match.group("target"))
+        if not quantity_match:
+            quantity_match = re.search(r"\bwith\s+(\d{1,3})\s+(?=[A-Za-z])", text, re.I)
+        arguments = {"old_product_id": old_matches[0].id, "new_product_id": new_matches[0].id}
+        if quantity_match:
+            arguments["quantity"] = int(quantity_match.group(1))
+        replace_tool = next(tool for tool in tools if tool.name == "replace_in_cart")
+        return replace_tool.invoke(arguments)
+    return None
 
 
 def _resolve_add_request(db, message: str, tools: list) -> str | None:
@@ -93,6 +146,10 @@ def run_agent(db, user_id: str, message: str, history: list | None = None):
         return blocked_message
 
     tools = build_tools(db, user_id)
+    if _remove_all_context(message, history):
+        result = _remove_all_cart_items(db, user_id)
+        return enforce_response_guardrails(result, [result])
+
     add_result = _resolve_add_request(db, message, tools)
     if add_result is not None:
         return enforce_response_guardrails(add_result, [add_result])

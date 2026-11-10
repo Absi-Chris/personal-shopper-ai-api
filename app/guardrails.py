@@ -7,11 +7,19 @@ from guardrails.settings import settings
 
 _CART_CHANGE_CLAIM = re.compile(r"\b(?:added|removed|replaced|swapped|updated|deleted)\b", re.I)
 _SUCCESSFUL_CART_TOOL = re.compile(
-    r"\b(?:added\b|removed from cart\b|replaced\b|swapped\b)", re.I
+    r"\b(?:added\b|removed from cart\b|removed all items from your cart\b|replaced\b|swapped\b)", re.I
 )
 _TOPIC_VALIDATION_MIN_WORDS = 4
 _SHOPPING_INTENT = re.compile(
     r"\b(?:recommend|suggest|find|search|compare|buy|purchase|add|remove|replace|swap|show|list)(?:\s+down)?\b|\bgive\s+me\b",
+    re.I,
+)
+_POLICY_QUERY = re.compile(
+    r"\b(?:shipping|delivery|return|refund|exchange|warranty|policy|policies|manual|document|documents|processing|timeframe|timeframes|window|windows|business\s+days)\b",
+    re.I,
+)
+_CART_CONFIRMATION = re.compile(
+    r"^\s*(?:yes|yeah|yep|confirmed|please\s+do|do\s+it|proceed(?:\s+with)?(?:\s+\d{1,3}(?:\s*(?:qty|quantity|items?))?)?)\b",
     re.I,
 )
 _PRODUCT_TERM = re.compile(
@@ -25,7 +33,15 @@ _OUTPUT_PII_ENTITIES = ("EMAIL_ADDRESS", "PHONE_NUMBER")
 
 def _configure_guardrails():
     settings.use_server = False
+    settings.disable_tracing = True
     settings.rc.enable_metrics = False
+
+
+def _new_guard() -> Guard:
+    guard = Guard(use_server=False)
+    guard.configure(allow_metrics_collection=False)
+    settings.rc.enable_metrics = False
+    return guard
 
 
 @lru_cache(maxsize=1)
@@ -33,7 +49,7 @@ def _jailbreak_guard() -> Guard:
     from guardrails_ai.detect_jailbreak import DetectJailbreak
 
     _configure_guardrails()
-    return Guard(use_server=False).use(
+    return _new_guard().use(
         DetectJailbreak(use_local=True, on_fail=OnFailAction.EXCEPTION),
     )
 
@@ -43,7 +59,7 @@ def _topic_guard() -> Guard:
     from guardrails_ai.restricttotopic import RestrictToTopic
 
     _configure_guardrails()
-    return Guard(use_server=False).use(
+    return _new_guard().use(
         RestrictToTopic(
             valid_topics=[
                 "shopping",
@@ -51,7 +67,7 @@ def _topic_guard() -> Guard:
                 "product information",
                 "product comparisons",
                 "shopping carts and orders",
-                "product documents and warranties",
+                "product documents, warranties, shipping, delivery, returns and refunds",
                 "greetings and assistant capabilities",
             ],
             use_local=True,
@@ -83,7 +99,7 @@ def _output_guard() -> Guard:
         from guardrails_ai.competitor_check import CompetitorCheck
 
         validators.append(CompetitorCheck(competitors, on_fail=OnFailAction.EXCEPTION))
-    return Guard(use_server=False).use(*validators, on="output")
+    return _new_guard().use(*validators, on="output")
 
 
 def validate_user_input(message: str) -> str | None:
@@ -91,7 +107,11 @@ def validate_user_input(message: str) -> str | None:
         jailbreak_result = _jailbreak_guard().validate(message)
         if not jailbreak_result.validation_passed:
             return _INPUT_BLOCKED
-        explicit_shopping_request = _SHOPPING_INTENT.search(message) and _PRODUCT_TERM.search(message)
+        explicit_shopping_request = (
+            (_SHOPPING_INTENT.search(message) and _PRODUCT_TERM.search(message))
+            or _POLICY_QUERY.search(message)
+            or _CART_CONFIRMATION.search(message)
+        )
         if len(message.split()) >= _TOPIC_VALIDATION_MIN_WORDS and not explicit_shopping_request:
             topic_result = _topic_guard().validate(message)
             if not topic_result.validation_passed:

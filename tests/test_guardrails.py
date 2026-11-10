@@ -17,6 +17,19 @@ class ResponseGuardrailTests(unittest.TestCase):
         with patch.object(settings.rc, "enable_metrics", True):
             _configure_guardrails()
             self.assertFalse(settings.rc.enable_metrics)
+            self.assertTrue(settings.disable_tracing)
+
+    def test_guard_creation_explicitly_disables_metrics_after_rc_load(self):
+        from app.guardrails import _new_guard
+
+        guard = Mock()
+        with patch("app.guardrails.Guard", return_value=guard):
+            with patch.object(settings.rc, "enable_metrics", True):
+                result = _new_guard()
+                self.assertFalse(settings.rc.enable_metrics)
+
+        self.assertIs(result, guard)
+        guard.configure.assert_called_once_with(allow_metrics_collection=False)
 
     def test_normalizes_rupee_symbol(self):
         with patch("app.guardrails._validate_assistant_output", side_effect=lambda text: text):
@@ -30,6 +43,14 @@ class ResponseGuardrailTests(unittest.TestCase):
                 ["Done, I swapped Sony for 1 x Anker in your cart."],
             )
         self.assertEqual(answer, "Done, I swapped Sony for Anker.")
+
+    def test_allows_remove_all_claim_confirmed_by_tool(self):
+        with patch("app.guardrails._validate_assistant_output", side_effect=lambda text: text):
+            answer = enforce_response_guardrails(
+                "Removed all items from your cart.",
+                ["Removed all items from your cart."],
+            )
+        self.assertEqual(answer, "Removed all items from your cart.")
 
     def test_blocks_unconfirmed_cart_claim(self):
         with patch("app.guardrails._validate_assistant_output", side_effect=lambda text: text):
@@ -54,6 +75,49 @@ class ResponseGuardrailTests(unittest.TestCase):
         with patch("app.guardrails._jailbreak_guard", return_value=jailbreak_guard):
             with patch("app.guardrails._topic_guard", return_value=topic_guard):
                 result = validate_user_input("Can you recommend headphones under 3000 pesos?")
+        self.assertIsNone(result)
+        jailbreak_guard.validate.assert_called_once()
+        topic_guard.validate.assert_not_called()
+
+    def test_allows_shipping_policy_question_without_topic_false_positive(self):
+        jailbreak_guard = Mock()
+        jailbreak_guard.validate.return_value = Mock(validation_passed=True)
+        topic_guard = Mock()
+        with patch("app.guardrails._jailbreak_guard", return_value=jailbreak_guard):
+            with patch("app.guardrails._topic_guard", return_value=topic_guard):
+                result = validate_user_input("What are the shipping policies?")
+        self.assertIsNone(result)
+        jailbreak_guard.validate.assert_called_once()
+        topic_guard.validate.assert_not_called()
+
+    def test_allows_delivery_and_returns_questions_without_topic_false_positive(self):
+        jailbreak_guard = Mock()
+        jailbreak_guard.validate.return_value = Mock(validation_passed=True)
+        topic_guard = Mock()
+        with patch("app.guardrails._jailbreak_guard", return_value=jailbreak_guard):
+            with patch("app.guardrails._topic_guard", return_value=topic_guard):
+                result = validate_user_input("What is the delivery and returns policy?")
+        self.assertIsNone(result)
+        topic_guard.validate.assert_not_called()
+
+    def test_allows_processing_window_follow_up_without_topic_false_positive(self):
+        jailbreak_guard = Mock()
+        jailbreak_guard.validate.return_value = Mock(validation_passed=True)
+        topic_guard = Mock()
+        with patch("app.guardrails._jailbreak_guard", return_value=jailbreak_guard):
+            with patch("app.guardrails._topic_guard", return_value=topic_guard):
+                result = validate_user_input("what is the processing window?")
+        self.assertIsNone(result)
+        jailbreak_guard.validate.assert_called_once()
+        topic_guard.validate.assert_not_called()
+
+    def test_allows_proceed_with_quantity_confirmation_without_topic_validation(self):
+        jailbreak_guard = Mock()
+        jailbreak_guard.validate.return_value = Mock(validation_passed=True)
+        topic_guard = Mock()
+        with patch("app.guardrails._jailbreak_guard", return_value=jailbreak_guard):
+            with patch("app.guardrails._topic_guard", return_value=topic_guard):
+                result = validate_user_input("proceed with 1 qty")
         self.assertIsNone(result)
         jailbreak_guard.validate.assert_called_once()
         topic_guard.validate.assert_not_called()
