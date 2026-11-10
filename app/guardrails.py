@@ -26,8 +26,8 @@ _PRODUCT_TERM = re.compile(
     r"\b(?:laptop|computer|headphones?|earbuds?|phone|smartphone|monitor|keyboard|mouse|tablet|camera|smartwatch|product|item|brand|model)\b",
     re.I,
 )
-_INPUT_BLOCKED = "I can help with shopping and product-related questions. Please rephrase your request."
-_OUTPUT_BLOCKED = "I couldn't provide that response safely. Please rephrase your request."
+_INPUT_BLOCKED = "Guardrail violation detected. Please rephrase your request."
+_OUTPUT_BLOCKED = "Guardrail violation detected. Please rephrase your request."
 _OUTPUT_PII_ENTITIES = ("EMAIL_ADDRESS", "PHONE_NUMBER")
 
 

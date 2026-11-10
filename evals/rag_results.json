@@ -3,10 +3,10 @@
   "model": "gpt-4o-mini",
   "top_k": 4,
   "summary": {
-    "faithfulness": 0.8,
-    "answer_relevancy": 0.6632881688878838,
-    "context_precision": 0.8444444443783101,
-    "context_recall": 0.925
+    "faithfulness": 0.8266666666666667,
+    "answer_relevancy": 0.6799753159805713,
+    "context_precision": 0.8672222221611758,
+    "context_recall": 0.9333333333333332
   },
   "results": [
     {
@@ -34,7 +34,7 @@
       "response": "A confirmation email is normally issued within 15 minutes of successful order submission.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.7665871269128496,
+        "answer_relevancy": 0.7666222411984235,
         "context_precision": 0.9999999999,
         "context_recall": 1.0
       }
@@ -44,7 +44,7 @@
       "response": "If you have not received your confirmation email, you should check your spam folder or contact support with the checkout timestamp.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.9698487609711544,
+        "answer_relevancy": 0.9698478654808614,
         "context_precision": 0.9999999999,
         "context_recall": 1.0
       }
@@ -74,7 +74,7 @@
       "response": "Confirmed orders are usually prepared within 1-2 business days, excluding weekends and published holidays.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.9605325070500813,
+        "answer_relevancy": 0.9604280995001053,
         "context_precision": 0.9999999999,
         "context_recall": 1.0
       }
@@ -94,7 +94,7 @@
       "response": "No, cash on delivery is only available when the checkout screen explicitly offers it.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.818277740931422,
+        "answer_relevancy": 0.8175330323501044,
         "context_precision": 0.9999999999,
         "context_recall": 1.0
       }
@@ -104,7 +104,7 @@
       "response": "Bank transfer verification should be completed within one business day after receipt of valid proof.",
       "scores": {
         "faithfulness": 0.5,
-        "answer_relevancy": 0.8715031382310937,
+        "answer_relevancy": 0.8714992470280901,
         "context_precision": 0.49999999995,
         "context_recall": 1.0
       }
@@ -124,7 +124,7 @@
       "response": "Receipts are delivered electronically after successful payment.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.7323237481769942,
+        "answer_relevancy": 0.7324136805362172,
         "context_precision": 0.3333333333,
         "context_recall": 1.0
       }
@@ -144,8 +144,8 @@
       "response": "No, the shopping assistant cannot collect sensitive payment credentials or directly process card charges.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.7754214318297281,
-        "context_precision": 0.999999999975,
+        "answer_relevancy": 0.7754145307559015,
+        "context_precision": 0.9999999999666667,
         "context_recall": 1.0
       }
     },
@@ -174,8 +174,8 @@
       "response": "Provincial standard shipping costs PHP 149.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.9700295082091842,
-        "context_precision": 0.8055555555287036,
+        "answer_relevancy": 0.9700246792807525,
+        "context_precision": 0.7499999999625,
         "context_recall": 1.0
       }
     },
@@ -184,7 +184,7 @@
       "response": "An order subtotal of PHP 5,000 or above qualifies for free standard shipping before discounts and excluding shipping fees.",
       "scores": {
         "faithfulness": 1.0,
-        "answer_relevancy": 0.7730279717278966,
+        "answer_relevancy": 0.8102861702929238,
         "context_precision": 0.99999999995,
         "context_recall": 1.0
       }
@@ -203,9 +203,309 @@
       "question": "My merchandise subtotal is PHP 5,100 before discounts and PHP 4,600 after discounts. Do I get free shipping?",
       "response": "Yes, you qualify for free standard shipping because your merchandise subtotal of PHP 5,100 is above the PHP 5,000 threshold before discounts.",
       "scores": {
-        "faithfulness": 0.5,
-        "answer_relevancy": 0.6147988126178391,
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.6148418794607694,
         "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Does the free-shipping promotion include express delivery?",
+      "response": "The documents specify that express shipping, where available, is excluded from free standard-shipping promotions.",
+      "scores": {
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.7389322774766356,
+        "context_precision": 0.8333333332916666,
+        "context_recall": 0.5
+      }
+    },
+    {
+      "question": "How long does delivery to Metro Manila take after dispatch?",
+      "response": "Metro Manila deliveries generally take 2-4 business days after dispatch.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9526682610722269,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How long does provincial delivery take after dispatch?",
+      "response": "Provincial deliveries generally take 4-8 business days after dispatch.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9675330292904878,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "When will tracking information be available?",
+      "response": "Tracking details are normally provided within 24 hours after dispatch.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7302677687325868,
+        "context_precision": 0.3333333333,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How many delivery attempts may the courier make?",
+      "response": "The courier may make up to two delivery attempts.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9999997677177154,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Who pays if a parcel is returned because I provided a wrong address?",
+      "response": "Additional shipping charges may apply if the parcel is returned because the customer supplied an incorrect address.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7270377092595783,
+        "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What should I do if the outer package looks damaged?",
+      "response": "If the outer packaging appears damaged, customers should take photographs before opening the parcel and report the concern within 48 hours of delivery.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.8515874468189629,
+        "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What is the standard return period for an unused item?",
+      "response": "The standard return period for an unused item is 14 calendar days after the delivery date.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 1.0000000000000002,
+        "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Can I return an eligible unused product 12 days after delivery?",
+      "response": "Yes, you can return an eligible unused product 12 days after delivery, as the standard return window allows for returns within 14 calendar days after the delivery date.",
+      "scores": {
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.932625110646411,
+        "context_precision": 0.3333333333,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Can I return an unused product 16 days after delivery under the standard return policy?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.99999999995,
+        "context_recall": 0.5
+      }
+    },
+    {
+      "question": "Do returned products need their original packaging?",
+      "response": "Yes, returned items should include original accessories and packaging.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.6161669540904221,
+        "context_precision": 0.8333333332916666,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How quickly must I report an incorrect or defective item?",
+      "response": "You must report a defective, damaged, or incorrectly shipped item within seven calendar days of delivery.",
+      "scores": {
+        "faithfulness": 0.6666666666666666,
+        "answer_relevancy": 0.8172408864990025,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Can I return a redeemed gift card because I changed my mind?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.9999999999,
+        "context_recall": 0.5
+      }
+    },
+    {
+      "question": "Are customized items eligible for change-of-mind returns?",
+      "response": "No, customized items are generally excluded from change-of-mind returns unless the item is defective or applicable law requires otherwise.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9999996382155857,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What happens if my requested exchange replacement is unavailable?",
+      "response": "If the requested replacement is unavailable, the customer may choose an eligible refund instead.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.755617174902354,
+        "context_precision": 0.7499999999625,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Who pays return shipping for a confirmed wrong-item shipment?",
+      "response": "The fictional store covers reasonable return shipping for a confirmed wrong-item shipment.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7238503985226851,
+        "context_precision": 0.999999999975,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Who pays return shipping if I just changed my mind?",
+      "response": "Customers pay return shipping for approved change-of-mind returns.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.8567176732682013,
+        "context_precision": 0.9166666666361111,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How long does the warehouse inspect a returned parcel?",
+      "response": "The warehouse inspects a returned parcel within three business days after warehouse receipt.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9698671895107633,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Does submitting a return request guarantee a refund?",
+      "response": "No, merely submitting a return request does not guarantee a refund.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.9999995679321719,
+        "context_precision": 0.8055555555287036,
+        "context_recall": 0.6666666666666666
+      }
+    },
+    {
+      "question": "How quickly are approved refunds initiated?",
+      "response": "Approved refunds are initiated within five business days.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.8959672692800882,
+        "context_precision": 0.8333333332916666,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How long can the refund take to appear in my payment account?",
+      "response": "The refund can take an additional 5-10 business days to post to the original payment method after it has been initiated.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7184644261735049,
+        "context_precision": 0.7499999999625,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Which charges are included in an approved refund?",
+      "response": "Approved refunds usually include the item price actually paid and applicable taxes.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.8088362836904032,
+        "context_precision": 0.99999999995,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Will the original shipping fee be refunded if I return an item because I changed my mind?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.8333333332916666,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "How are refunds calculated for a multi-item order with one accepted return?",
+      "response": "For multi-item orders, the approved refundable amount is calculated only for the accepted returned items and their applicable discounts.",
+      "scores": {
+        "faithfulness": 0.6666666666666666,
+        "answer_relevancy": 0.8406270300826435,
+        "context_precision": 0.8333333332916666,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What information do I need to check my refund status?",
+      "response": "To check your refund status, you need the order reference and case number.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.941938976000363,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What is the general warranty duration for eligible electronics?",
+      "response": "The general warranty duration for eligible electronics is a fictional 12-month limited warranty against manufacturing defects from the delivery date.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.962401732841203,
+        "context_precision": 0.7499999999625,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Are accidental water spills covered under the general electronics warranty?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.9166666666361111,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "Does the warranty cover unauthorized modifications?",
+      "response": "The documents do not specify it.",
+      "scores": {
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.8055555555287036,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What proof is required for a warranty claim?",
+      "response": "A receipt or valid order reference is required for a warranty claim. The support team may also request the device serial number and a description of the issue.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.8880951700209843,
+        "context_precision": 0.9999999999,
+        "context_recall": 1.0
+      }
+    },
+    {
+      "question": "What warranty remedies might the store provide?",
+      "response": "The store may arrange repair, equivalent replacement, or refund according to availability and applicable requirements.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 0.9999999999666667,
         "context_recall": 1.0
       }
     }
