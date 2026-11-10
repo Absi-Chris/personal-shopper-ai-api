@@ -98,6 +98,8 @@ The agent uses LangChain's `create_agent` tool loop. Tool schemas are exposed to
 
 The live agent uses Guardrails AI input validators (`DetectJailbreak`, `RestrictToTopic`) before any agent or cart-tool execution, and output validators (`ProfanityFree`, `GuardrailsPII`) before returning a response. `CompetitorCheck` is enabled when you configure `GUARDRAIL_COMPETITORS` as a comma-separated list; it is configurable because this catalog intentionally compares multiple brands. The app also normalizes the rupee symbol to `₱` and refuses to confirm a cart mutation unless a tool result confirms success.
 
+Chat requests include the most recent 8 history messages by default (4 user/assistant turns). Set `CHAT_HISTORY_LIMIT` to adjust the context window; smaller values can reduce response latency and token use, but retain less conversation context.
+
 Guardrails validators download local model assets. Install the project requirements, then run each validator's setup step once:
 ```bash
 .venv/bin/python -m guardrails_ai.detect_jailbreak.post_install

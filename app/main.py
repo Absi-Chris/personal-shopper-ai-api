@@ -15,6 +15,7 @@ from .rag import delete_document_vectors, ingest_text
 
 load_dotenv()
 DOCUMENTS_DIR = Path(os.getenv("DOCUMENTS_DIR", "./documents"))
+CHAT_HISTORY_LIMIT = max(2, int(os.getenv("CHAT_HISTORY_LIMIT", "8")))
 Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Personal Shopper AI API", version="1.0.0")
 
@@ -98,7 +99,7 @@ def chat(payload: ChatRequest, user_id: str = Depends(current_user), db: Session
             select(ChatMessage).where(
                 ChatMessage.session_id == session_id,
                 ChatMessage.user_id == user_id
-            ).order_by(ChatMessage.created_at.desc()).limit(12)
+            ).order_by(ChatMessage.created_at.desc()).limit(CHAT_HISTORY_LIMIT)
         ).all()
         history = [{"role": row.role, "content": row.content} for row in reversed(history_rows)]
         answer = run_agent(db, user_id, payload.message, history=history)
