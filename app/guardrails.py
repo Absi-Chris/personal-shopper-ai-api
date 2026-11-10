@@ -25,6 +25,7 @@ _OUTPUT_PII_ENTITIES = ("EMAIL_ADDRESS", "PHONE_NUMBER")
 
 def _configure_guardrails():
     settings.use_server = False
+    settings.rc.enable_metrics = False
 
 
 @lru_cache(maxsize=1)

@@ -5,12 +5,19 @@ from app.guardrails import (
     _INPUT_BLOCKED,
     _OUTPUT_BLOCKED,
     _OUTPUT_PII_ENTITIES,
+    _configure_guardrails,
     enforce_response_guardrails,
     validate_user_input,
 )
+from guardrails.settings import settings
 
 
 class ResponseGuardrailTests(unittest.TestCase):
+    def test_guardrails_metrics_are_disabled(self):
+        with patch.object(settings.rc, "enable_metrics", True):
+            _configure_guardrails()
+            self.assertFalse(settings.rc.enable_metrics)
+
     def test_normalizes_rupee_symbol(self):
         with patch("app.guardrails._validate_assistant_output", side_effect=lambda text: text):
             answer = enforce_response_guardrails("The price is ₹1,999.", [])
